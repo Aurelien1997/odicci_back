@@ -27,7 +27,7 @@ class UsersController < ApplicationController
       render json: @user.errors, status: :unprocessable_entity
     end
 
-    url = URI("https://a.klaviyo.com/api/lists/")
+    url = URI("https://a.klaviyo.com/api/profiles/")
 
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
@@ -37,7 +37,8 @@ class UsersController < ApplicationController
     request["revision"] = '2022-10-17'
     request["content-type"] = 'application/json'
     request["Authorization"] = 'Klaviyo-API-Keypk_30b721cc9db35ff594caff64c0984311fc'
-    request.body = "{\"data\":{\"type\":\"list\",\"attributes\":{\"name\":\"#{@user.first_name}\"}}}"
+    request.body = "{\"data\":{\"type\":\"profile\",\"attributes\":{\"email\":\"#{@user.email}\",\"first_name\":\"#{@user.first_name}\",\"last_name\":\"#{@user.last_name}\"}}}"
+    
     
     response = http.request(request)
     puts response.read_body
